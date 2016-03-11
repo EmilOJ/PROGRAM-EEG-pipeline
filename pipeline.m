@@ -14,7 +14,7 @@ clear all;
 
 %% Read data
 data_file       = 'part10.bdf';
-[cfg data_all]  = readData(data_file);
+[cfg data_all]  = read_data(data_file);
 
 
 
