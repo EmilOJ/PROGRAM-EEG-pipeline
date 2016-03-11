@@ -1,4 +1,4 @@
 clear all; 
 % TODO: Load bad channels
 
-[cfg data] = pipeline_ft('det', 10);
+pipeline_ft('det', 10);
