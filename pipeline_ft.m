@@ -12,18 +12,9 @@ function [] = pipeline_ft(experiment, participant)
     % 9. filter and re-reference the raw data, tailored towards the features of interest
     % 10. get rid of artifacts by back-projection of all but the artifact ICs (I suggest using CORRMAP for the classification process, it is near objective and very robust, we get plenty positive feedback from other labs)
     % 11. extract events
+    
     tic
-
-    root_dir                    = ['/Users/emil/Desktop/Experiment1/data' filesep];
-    cfg                         = [];
-    
-    % 1. Read data config
-    cfg.subjectnr               = num2str(participant);
-    cfg.subjectstr              = ['part' cfg.subjectnr];
-    cfg.dataset                 = [cfg.subjectstr '.bdf'];
-    cfg.datadir                 = [root_dir 'EEG-' experiment filesep];
-    
-    cfg_epoch_1s = cfg;
+    cfg_epoch_1s = initialize_participant_cfg(experiment, participant);
 
     % 2. Filter config
     cfg_epoch_1s.hpfilter                = 'yes';
@@ -42,7 +33,7 @@ function [] = pipeline_ft(experiment, participant)
 
     % Preprocess (with above configs)
     data_epoch_1s                        = ft_preprocessing(cfg_epoch_1s);
-
+    
     % Show elapsed time
     preproc_time = toc;
     disp(['Preprocessing time: '  num2str(preproc_time) ' seconds']);
@@ -53,14 +44,12 @@ function [] = pipeline_ft(experiment, participant)
         % ICA decomposition
         %comp = ft_componentanalysis(cfg_epoch_1s, data_epoch_1s);
         comp = 1;
-        
-        % Save decomposition
-        
     catch
         disp('Could not run ICA');
     end
     
-    save([cfg.subjectstr 'ICAcomp1.mat'], 'comp', 'cfg', '-v7.3');
+    % Save decomposition
+    save([cfg_epoch_1s.subjectstr 'ICAcomp.mat'], 'comp', '-v7.3');
 
     % 8. apply the ica weights to the unprocessed raw data
     % 9. filter and re-reference the raw data, tailored towards the features of interest
@@ -70,13 +59,13 @@ function [] = pipeline_ft(experiment, participant)
 
     %% Helper functions
     function channels = get_channellist()
-        load([cfg.datadir 'bad_channels'], 'bad_channels');
+        load([cfg_epoch_1s.datadir 'bad_channels'], 'bad_channels');
         channels = 1:128;
 
-        for i = 1:length(bad_channels.(cfg.subjectstr))
-            channels = channels(channels ~= bad_channels.(cfg.subjectstr)(i));
+        for i = 1:length(bad_channels.(cfg_epoch_1s.subjectstr))
+            channels = channels(channels ~= bad_channels.(cfg_epoch_1s.subjectstr)(i));
         end
-        disp(['Defining channels to remove:' mat2str(bad_channels.(cfg.subjectstr))]);
+        disp(['Defining channels to remove:' mat2str(bad_channels.(cfg_epoch_1s.subjectstr))]);
     end
 
     clear all;
