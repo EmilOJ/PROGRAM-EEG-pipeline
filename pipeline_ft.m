@@ -1,4 +1,4 @@
-function [] = pipeline()
+function [cfg data] = pipeline_ft()
     % 1. read the data
     % 2. hp filter (1 Hz) & maybe lp filter (aprpox. 40 Hz)
     % 3. epoch into dummy consecutive epochs (length approx. 1sec)
@@ -15,17 +15,18 @@ function [] = pipeline()
 
     %% Read data
     data_file       = 'part10.bdf';
-    [cfg, data]  = read_data(data_file);
+    data = struct;
+    cfg  = read_data(data_file);
 
     %% Epoch into 1s pieces
-    [cfg, data] = epoch_data_1s(cfg, data);
+    epoch_data_1s();
 
 
     %% Extract events
     cfg.trialdef.eventcodes.gram = 65301;
     cfg.trialdef.eventcodes.lex = 65311;
 
-    [cfg_lex, data_lex, cfg_gram, data_gram] = epoch_data(cfg, data_all);
+    [cfg_lex, data_lex, cfg_gram, data_gram] = epoch_data(cfg);
 
     %% Artifacts
 
@@ -35,28 +36,30 @@ function [] = pipeline()
     
     %% Functions
     
-    function [cfg data] = read_data(data_file)
+    function cfg = read_data(data_file)
         cfg         = [];
         cfg.dataset = data_file;
         data        = ft_preprocessing(cfg);
     end
+
+    function [] = epoch_data_1s()
+        cfg.length      = 1;
+        data            = ft_redefinetrial(cfg, data);
+    end
     
-    function [cfg_lex, data_lex, cfg_gram, data_gram] = epoch_data_events(cfg_, data_all)
-        cfg_.trialdef.eventtype     = 'STATUS';
+    function [cfglex, data_lex, cfggram, data_gram] = epoch_data_events()
+        cfg.trialdef.eventtype     = 'STATUS';
 
-        cfg_.trialdef.eventvalue    = {cfg_.trialdef.eventcodes.lex};
-        cfg_lex                     = ft_definetrial(cfg_);
-        data_lex                    = ft_redefinetrial(cfg_lex, data_all);
+        cfg.trialdef.eventvalue    = {cfg.trialdef.eventcodes.lex};
+        cfglex                     = ft_definetrial(cfg);
+        data_lex                   = ft_redefinetrial(cfglex, data);
 
-        cfg_.trialdef.eventvalue    = {cfg_.trialdef.eventcodes.gram};
-        cfg_gram                    = ft_definetrial(cfg_);
-        data_gram                   = ft_redefinetrial(cfg_gram, data_all);
+        cfg.trialdef.eventvalue    = {cfg.trialdef.eventcodes.gram};
+        cfggram                    = ft_definetrial(cfg);
+        data_gram                  = ft_redefinetrial(cfggram, data);
     end
 
-    function [cfg_, data_epoched1s] = epoch_data_1s(cfg_, data_all)
-        cfg_.length               = 1;
-        data_epoched1s            = ft_redefinetrial(cfg, data_org);
-    end
+    
 
 end
 
