@@ -43,13 +43,12 @@ function [] = pipeline_ft(experiment, participant)
     try
         % ICA decomposition
         comp = ft_componentanalysis(cfg_epoch_1s, data_epoch_1s);
-        
     catch
         disp('Could not run ICA');
     end
     
     % Save decomposition
-    save([cfg_epoch_1s.subjectstr 'ICAcomp.mat'], 'comp', '-v7.3');
+    save([cfg_epoch_1s.datadir cfg_epoch_1s.subjectstr 'ICAcomp.mat'], 'comp', '-v7.3');
 
     % 8. apply the ica weights to the unprocessed raw data
     % 9. filter and re-reference the raw data, tailored towards the features of interest
