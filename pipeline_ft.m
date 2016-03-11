@@ -42,8 +42,8 @@ function [] = pipeline_ft(experiment, participant)
     cfg_epoch_1s.method                  = 'runica';
     try
         % ICA decomposition
-        %comp = ft_componentanalysis(cfg_epoch_1s, data_epoch_1s);
-        comp = 1;
+        comp = ft_componentanalysis(cfg_epoch_1s, data_epoch_1s);
+        
     catch
         disp('Could not run ICA');
     end
