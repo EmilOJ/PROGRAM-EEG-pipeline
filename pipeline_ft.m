@@ -11,9 +11,10 @@ function [] = pipeline_ft(experiment, participant)
     % 8. apply the ica weights to the unprocessed raw data
     % 9. filter and re-reference the raw data, tailored towards the features of interest
     % 10. get rid of artifacts by back-projection of all but the artifact ICs (I suggest using CORRMAP for the classification process, it is near objective and very robust, we get plenty positive feedback from other labs)
-    % 11. extract events
+    % 11. extract events      
     
     tic
+    add_filedtrip_path();
     cfg_epoch_1s = initialize_participant_cfg(experiment, participant);
 
     % 2. Filter config
