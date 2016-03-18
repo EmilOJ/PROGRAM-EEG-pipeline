@@ -4,14 +4,16 @@ function [] = check_ICA_components(experiment, participant)
     % Load ICA decomposition
     load([cfg.datadir cfg.subjectstr 'ICAcomp']);
     
-    cfg.component = [1:20];
+    
+    cfg.component = [1:20]; % Components to show
+    
     cfg.layout = 'biosemi128.lay';
     cfg.comment = 'no';
-    ft_topoplotIC(cfg, comp);
+    %ft_topoplotIC(cfg, comp); % Plot components
     
     cfg.channel = [1:5];
     cfg.viewmode = 'component';
-    cfg.continous = 'yes';
+    cfg.continuous = 'yes';
     ft_databrowser(cfg, comp);
 
 end
