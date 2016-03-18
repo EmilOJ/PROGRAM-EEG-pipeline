@@ -9,7 +9,7 @@ function [] = check_ICA_components(experiment, participant)
     
     cfg.layout = 'biosemi128.lay';
     cfg.comment = 'no';
-    %ft_topoplotIC(cfg, comp); % Plot components
+    ft_topoplotIC(cfg, comp); % Plot components
     
     cfg.channel = [1:5];
     cfg.viewmode = 'component';
