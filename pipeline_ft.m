@@ -25,7 +25,7 @@ function [] = pipeline_ft(experiment, participant)
     % 3. Seperate into 1 second epochs config
     cfg_epoch_1s.trialfun                = 'ft_trialfun_general';
     cfg_epoch_1s.trialdef.triallength    = 1; % duration in seconds
-    cfg_epoch_1s.trialdef.ntrials        = inf;                    % number of trials, inf results in as many as possible
+    cfg_epoch_1s.trialdef.ntrials        = inf; 
     cfg_epoch_1s                         = ft_definetrial(cfg_epoch_1s);
 
     % 4. Remove bad channels
