@@ -1,6 +1,7 @@
 function [cfg] = initialize_participant_cfg(experiment, participant)
+    eval('setroot')
     cfg                         = [];
-    cfg.rootdir                 = ['/Users/emil/Desktop/Experiment1/data' filesep];
+    cfg.rootdir                 = [root filesep];
     cfg.subjectnr               = num2str(participant);
     cfg.subjectstr              = ['part' cfg.subjectnr];
     cfg.dataset                 = [cfg.subjectstr '.bdf'];
