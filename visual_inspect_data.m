@@ -1,6 +1,7 @@
-function [] = visual_inspect_data(experiment, participant)
-    cfg     = initialize_participant_cfg(experiment, participant);
-    
+function [] = visual_inspect_data(experiment, participant, cfg, data)
+    if cfg == []
+        cfg     = initialize_participant_cfg(experiment, participant);
+    end
     
     cfg.channel             = [1:20];
     cfg.continuous          = 'yes';
@@ -13,6 +14,10 @@ function [] = visual_inspect_data(experiment, participant)
     cfg.preproc.hpfilter    = 'yes';
     cfg.preproc.hpfreq      = 1;
     
-    ft_databrowser(cfg);
+    if data == []
+        ft_databrowser(cfg);
+    else
+        ft_databrowser(cfg, data);
+    end
 
 end

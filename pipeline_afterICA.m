@@ -1,49 +1,54 @@
-function [cfg data] = pipeline_afterICA(experiment, participant)    
- %% 8. apply the ica weights to the unprocessed raw data
-
- 
- %% 9. filter and re-reference the raw data, tailored towards the features of interest
- 
+function [cfg data] = pipeline_afterICA(experiment, participant)
+ %% Load data
+    add_filedtrip_path();
+    cfg = initialize_participant_cfg(experiment, participant);
+    
+    % Load ICA decomposition
+    load([cfg.datadir 'proc_data']);
+    
+    cfg.component = proc_data.(cfg.subjectstr).eye_blink_comp;
+    load(cfg.ICAcomp_path);
+    
+    
  
  %% 10. get rid of artifacts by back-projection of all but the artifact ICs (I suggest using CORRMAP for the classification process, it is near objective and very robust, we get plenty positive feedback from other labs)
 
+    data = ft_preprocessing(cfg);
+    data = ft_rejectcomponent(cfg, comp, data);
+    
+ 
+ %% 9. re-reference the raw data
+    % Lange (2015): 0.2-30 Hz bandpass
+
+    cfg.channel     = [1:128, 137];
+%     
+    cfg.reref       = 'yes';
+    cfg.refchannel  = 'all';
+%     
+    data = ft_preprocessing(cfg, data);
+ 
+
 
  %% 11. extract events   
-    cfg.trialdef.eventcodes.det.gram = 65301;
-    cfg.trialdef.eventcodes.det.lex = 65311;
-    cfg.trialdef.eventcodes.verb.gram = [65421 65431 65422 65432];
-    cfg.trialdef.eventcodes.verb.lex = [65521 65531 65522 65532];
     
-
-
-    [cfg_gram, data_gram]       = epoch_data('gram');
-    [cfg_lex, data_lex]         = epoch_data('lex');
-
+    [cfg_gram, data_gram]       = epoch_data(cfg, 'gram', data);
+    [cfg_lex, data_lex]         = epoch_data(cfg, 'lex', data);
 
     
+ %% Filter
+    
+    filter_cfg.hpfreq      = 0.2;
+    filter_cfg.hpfilttype  = 'fir';
+    
+    filter_cfg.lpfreq      = 30;
+    filter_cfg.lpfilttype  = 'fir';
+    
+    data_gram = filter_epoched_data(filter_cfg, data_gram);
+    data_gram = filter_epoched_data(filter_cfg, data_gram);
+    
+    save([cfg.subjectdir cfg.subjectstr '_ICApruned_epoched_filtered.mat'] ...
+        ,'cfg_lex', 'cfg_gram', 'data_gram', 'data_lex', '-v7.3');
     
 
-    function [cfg_cond data_cond] = epoch_data(condition)
-            cfg.trialdef.eventtype = 'STATUS';
-            switch experiment
-                case 'det'
-                    switch condition
-                        case 'gram'
-                            cfg.trialdef.eventvalue = cfg.trialdef.eventcodes.det.gram;
-                        case 'lex'
-                            cfg.trialdef.eventvalue = cfg.trialdef.eventcodes.det.lex;
-                    end
-
-                case 'verb'
-                    switch condition
-                        case 'gram'
-                            cfg.trialdef.eventvalue = cfg.trialdef.eventcodes.verb.gram;
-                        case 'lex'
-                            cfg.trialdef.eventvalue = cfg.trialdef.eventcodes.verb.lex;
-                    end
-            end
-
-            cfg_cond    = ft_definetrial(cfg);
-            data_cond   = ft_redefinetrial(cfg_cond, data_proc);           
-    end
+   
 end

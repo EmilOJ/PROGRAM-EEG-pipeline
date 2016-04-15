@@ -18,4 +18,4 @@ clear all; close all;
 % 
 % end
 
-pipeline_afterICA('det', 8);
+pipeline_afterICA('det', 23);
