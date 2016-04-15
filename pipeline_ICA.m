@@ -16,6 +16,7 @@ function [] = pipeline_ft(experiment, participant)
     tic
     add_filedtrip_path();
     cfg_epoch_1s = initialize_participant_cfg(experiment, participant);
+    cfg_epoch_1s.dataset                 = [cfg.subjectdir cfg.subjectstr '.bdf'];
 
     % 2. Filter config
     cfg_epoch_1s.hpfilter                = 'yes';

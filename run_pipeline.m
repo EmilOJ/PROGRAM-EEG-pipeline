@@ -1,21 +1,27 @@
-clear all; close all;
+clear all; 
 % TODO: Load bad channels
 
-% pipeline_ICA('det', 10);
-% check_ICA_components('verber', 30);
-% visual_inspect_data('verber',30);
-
-% go = [7 8 9 10 11 12 13 14 16 17 18 19 20 21 22 23 25 26 28 29 30];
-% fail = [];
-% for i = go
-%     i
+% pipeline_ICA('det', 3);
+% check_ICA_components('det', 30);
+% visual_inspect_data('det',2);
+% pipeline_afterICA('det', ii);
+% reref_and_filter('det',2);
+% parfor i = 7:30
 %     try
-%         pipeline_afterICA('det', i);
+%         epoch_data('det',i);    
 %     catch
-%        disp([i ' failed']); 
-%        fail = [fail i];
+%         disp('fail');
 %     end
-% 
 % end
 
-pipeline_afterICA('det', 8);
+
+% reject_artifacts('det', 2);
+% 
+% subjects = [2,3,7,8,10,12,13,14,16:23,25,28,29,30];
+% 
+% 
+% grand_average('det', subjects);
+GA_inspect();
+
+% 
+% 

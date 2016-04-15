@@ -1,0 +1,12 @@
+function [] = compute_ERP_avg(experiment, participant)
+    add_filedtrip_path();
+    cfg = initialize_participant_cfg(experiment, participant);
+    
+    cfg1.intputfile = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered_gram.mat'];
+    cfg1.outputfile = [cfg.subjectdir cfg.subjectstr '_gram_ERP_avg'];
+    ft_timelockanalysis(cfg1, data_gram);
+    
+    cfg1.outputfile = [cfg.subjectdir cfg.subjectstr 'lex_ERP_avg'];
+    ft_timelockanalysis(cfg1, data_lex);
+
+end
