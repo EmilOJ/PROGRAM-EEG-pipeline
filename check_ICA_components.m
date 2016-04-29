@@ -2,7 +2,7 @@ function [] = check_ICA_components(experiment, participant)
     cfg = initialize_participant_cfg(experiment, participant);
     
     % Load ICA decomposition
-    load([cfg.datadir cfg.subjectstr 'ICAcomp']);
+    load([cfg.subjectdir cfg.subjectstr 'ICAcomp']);
     
     
     cfg.component = [1:20]; % Components to show
