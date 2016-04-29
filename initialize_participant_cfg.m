@@ -12,4 +12,10 @@ function [cfg] = initialize_participant_cfg(experiment, participant)
     cfg.experiment              = experiment;
     cfg.ICAcomp_path            = [cfg.subjectdir cfg.subjectstr 'ICAcomp.mat'];
     
+    cfg.files.raw               = [cfg.subjectdir cfg.subjectstr '.bdf'];
+    cfg.files.ICA_pruned        = [cfg.subjectdir cfg.subjectstr '_ICApruned.mat'];
+    cfg.files.ICA_pruned_filtered = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered.mat'];
+    cfg.files.gram              = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered_gram.mat'];
+    cfg.files.lex              = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered_lex.mat'];
+    
 end
