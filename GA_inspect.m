@@ -22,7 +22,7 @@ function [] = GA_inspect(channel)
        subplot(2,1,j);
        
        for i=1:size(y,1)
-           plot(time, y(i,:));%-y(i,1));
+           plot(time, y(i,:));%-mean(y(i,:),2));
            hold on;
        end
        axis tight;
