@@ -1,14 +1,17 @@
 function [] = reject_artifacts(experiment, participant)
     add_filedtrip_path();
-    cfg = initialize_participant_cfg(experiment, participant);
     
-    load([cfg.subjectdir cfg.subjectstr '_ICApruned_epoched_filtered.mat']);
     
-    cfg          = [];
-    cfg.method   = 'summary';
-    cfg.layout   = 'biosemi128.lay';
-    cfg.channel  = [1:128];    
-    data_clean   = ft_rejectvisual(cfg, data_gram);
+    for condition = {'gram', 'lex'}
+        icondition = condition{1};
+        cfg = initialize_participant_cfg(experiment, participant);
+        cfg.inputfile = [cfg.files.ICA_pruned_filtered_ icondition];
+
+
+        cfg.method   = 'summary';
+        cfg.outputfile = [cfg.files.ICA_pruned_filtered_artifacts_rejected_ icondition];
+        data_clean   = ft_rejectvisual(cfg);
+    end
     
 
 end
