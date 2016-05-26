@@ -19,10 +19,10 @@ clc; close all;
 
 
 % 
-subjects = [2,3,5,7,8,10,12:14,17,19,20,23,25,29,30]; %18 subjects
+ subjects = [2,3,5,7,8,10,12:14,17,19,20,23,25,29,30]; %18 subjects
    for i = subjects
 %     try
-         epoch_data('det',i);    
+         epoch_data('det',i, 'response');    
 %     catch
 %         disp('fail');
 %     end
@@ -30,8 +30,8 @@ subjects = [2,3,5,7,8,10,12:14,17,19,20,23,25,29,30]; %18 subjects
 %       repair_bad_channels('det',i);
    end
 % 
-%grand_average('det', subjects);
-GA_inspect('D30');
+grand_average('det', subjects);
+GA_inspect('C8');
 
 % 
 % % 

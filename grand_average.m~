@@ -47,28 +47,18 @@ function [] = grand_average(experiment, subjects)
     stat = ft_timelockstatistics(cfg,avg_gram{:},avg_lex{:});
 
     % make a plot
-%     cfg = [];
-%     cfg.highlightsymbolseries = ['*', '*', '.', '.', '.'];
-%     cfg.layout    = 'biosemi128.lay';
-%     cfg.contournum = 0;
-%     cfg.markersymbol = '.';
-%     cfg.alpha = 0.05;
-%     cfg.parameter = 'stat';
-%     cfg.zlim = [-5 5];
-%     figure; ft_clusterplot(cfg, stat);
-    
-    
-    close all;
-    figure;
-    imagesc(prob>0.05);
-    colormap('hot');
-    caxis([0 1]);
-    xlabel('Time [ms]');
-    ylabel('128 channels');
-    title('Stimulus-aligned: p < 0.05');
+    cfg = [];
+    cfg.highlightsymbolseries = ['*', '*', '.', '.', '.'];
+    cfg.layout    = 'biosemi128.lay';
+    cfg.contournum = 0;
+    cfg.markersymbol = '.';
+    cfg.alpha = 0.05;
+    cfg.parameter = 'stat';
+    cfg.zlim = [-5 5];
+    figure; ft_clusterplot(cfg, stat);
    
 %    % ANOVA
-%     disp('calculating anova table');
+%     disp('calculating anova table');<
 %     anovas = zeros(128, length(EEG(1).times));
 %     tic
 %     for channel_i = 1:128

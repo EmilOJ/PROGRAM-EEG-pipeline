@@ -1,4 +1,4 @@
-function [] = epoch_data(experiment, participant)
+function [] = epoch_data(experiment, participant, alignment)
     cfg = initialize_participant_cfg(experiment, participant);
     
     for condition = {'gram', 'lex'}
@@ -10,7 +10,12 @@ function [] = epoch_data(experiment, participant)
         cfg.trialdef.eventcodes.verb.lex = [65521 65531 65522 65532];
 
         cfg.trialdef.eventtype  = 'STATUS';
-        cfg.trialfun            = 'my_trialfun'; 
+        if strcmp(alignment, 'stim')
+            cfg.trialfun = 'my_trialfun_stimaligned'; 
+        elseif strcmp(alignment, 'response')
+            cfg.trialfun = 'my_trialfun_responsealigned'; 
+        end
+        
         switch cfg.experiment
             case 'det' 
                 switch icondition
@@ -32,7 +37,7 @@ function [] = epoch_data(experiment, participant)
         cfg.dataset = [cfg.subjectdir cfg.subjectstr '.bdf'];
         cfg_cond    = ft_definetrial(cfg);
         cfg_cond.inputfile   = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered.mat'];
-        cfg_cond.outputfile   = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered_' icondition '.mat'];
+        cfg_cond.outputfile   = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered_' icondition '_' alignment '.mat'];
 
         data   = ft_redefinetrial(cfg_cond);
     end
