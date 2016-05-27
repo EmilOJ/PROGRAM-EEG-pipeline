@@ -1,9 +1,9 @@
-function [] = GA_inspect(channel)
+function [] = GA_inspect(channel, alignment)
    add_filedtrip_path();
    cfg = initialize_participant_cfg('det', 2);
    
-   gram = load([cfg.ERPdir 'gram_GA.mat']);
-   lex = load([cfg.ERPdir 'lex_GA.mat']);
+   gram = load([cfg.ERPdir 'gram_GA_' alignment '.mat']);
+   lex = load([cfg.ERPdir 'lex_GA_' alignment '.mat']);
    
    
   

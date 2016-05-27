@@ -1,4 +1,4 @@
-function [] = grand_average(experiment, subjects)
+function [] = grand_average(experiment, subjects, alignment)
    
    add_filedtrip_path();
    cfg = initialize_participant_cfg(experiment, 2);
@@ -6,8 +6,8 @@ function [] = grand_average(experiment, subjects)
    counter = 1;
    for subject = subjects
        
-           avg_gram{counter} = compute_ERP_avg(experiment, subject, 'gram');
-           avg_lex{counter} = compute_ERP_avg(experiment, subject, 'lex');
+           avg_gram{counter} = compute_ERP_avg(experiment, subject, 'gram', alignment);
+           avg_lex{counter} = compute_ERP_avg(experiment, subject, 'lex', alignment);
            counter = counter +1 ;
       
    end
@@ -45,6 +45,10 @@ function [] = grand_average(experiment, subjects)
     cfg.uvar                = 2; % the 2nd row in cfg.design contains the subject number
 
     stat = ft_timelockstatistics(cfg,avg_gram{:},avg_lex{:});
+    
+    cfg = initialize_participant_cfg(experiment, 2);
+    
+    save([cfg.ERPdir 'statistics_' alignment '.mat'], 'stat');
 
     % make a plot
 %     cfg = [];
@@ -60,7 +64,7 @@ function [] = grand_average(experiment, subjects)
     
     close all;
     figure;
-    imagesc(prob>0.05);
+    imagesc(stat.prob>0.05);
     colormap('hot');
     caxis([0 1]);
     xlabel('Time [ms]');
@@ -84,10 +88,10 @@ function [] = grand_average(experiment, subjects)
 
 
    
-   cfg.outputfile = [cfg.ERPdir 'gram_GA.mat'];
+   cfg.outputfile = [cfg.ERPdir 'gram_GA_' alignment '.mat'];
    avg_gram = ft_timelockgrandaverage(cfg, avg_gram{:});
    
-   cfg.outputfile = [cfg.ERPdir 'lex_GA.mat'];
+   cfg.outputfile = [cfg.ERPdir 'lex_GA_' alignment ];
    avg_lex = ft_timelockgrandaverage(cfg, avg_lex{:});
    
 end

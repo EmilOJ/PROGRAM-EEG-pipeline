@@ -19,8 +19,8 @@ clc; close all;
 %       repair_bad_channels('det',i);
 %    end
 % 
-% grand_average('det', subjects, 'stim');
- GA_inspect('C8', 'stim');
+ grand_average('det', subjects, 'response');
+% GA_inspect('C8');
 
 % 
 % % 

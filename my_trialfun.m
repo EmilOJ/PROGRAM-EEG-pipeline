@@ -43,11 +43,12 @@ function [trl, event] = my_trialfun(cfg)
     if (strcmp(cfg.alignment, 'stim'))
         trl_begin = sample + pretrig;
         trl_end = sample + posttrig;
-    else if (strcmp(cfg.alignment, 'response'))
+    elseif (strcmp(cfg.alignment, 'response'))
         RT = RT(trials_to_keep);  
         trl_end = sample + RT;
         trl_begin = trl_end - 450;
     end
+    
     offset = repmat(pretrig, length(value),1);
     trl = [trl_begin trl_end offset]; 
     
