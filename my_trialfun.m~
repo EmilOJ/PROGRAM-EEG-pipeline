@@ -37,14 +37,34 @@ function [trl, event] = my_trialfun(cfg)
     
     trials_to_keep = ~isnan(RT) & ismember(value, correct_triggers);
     
+    
     value  = value(trials_to_keep);
     sample = sample(trials_to_keep);
-    RT = RT(trials_to_keep);
-    
-    trl_end = sample + RT;
-    trl_begin = trl_end - 450;
-    
+    if (strcmp(cfg.alignment, 'stim'))
+        trl_begin = sample + pretrig;
+        trl_end = sample + posttrig;
+    else if (strcmp(cfg.alignment, 'response'))
+        RT = RT(trials_to_keep);  
+        trl_end = sample + RT;
+        trl_begin = trl_end - 450;
+    end
     offset = repmat(pretrig, length(value),1);
     trl = [trl_begin trl_end offset]; 
+    
+    %% Remove previously rejected trials
+    load(cfg.proc_data);
+    
+    number_of_trials_to_reject = length(proc_data.(cfg.subjectstr).rejecttrial.(cfg.condition));
+    if number_of_trials_to_reject > 0
+        for i = 1:nu
+        
+    
+    
+    
+    
+    
+    
+    
+    
    
 end
