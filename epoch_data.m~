@@ -47,14 +47,13 @@ function [] = epoch_data(experiment, participant, alignment)
     %         cfg_cond.inputfile   = [cfg.subjectdir cfg.subjectstr '_ICApruned_filtered.mat'];           
 
             data   = ft_redefinetrial(cfg_cond,data_org);
-            %figure; subplot(2,1,1); plot(data.trial{1}(1,:)); title(['First value: ' num2str(data.trial{1}(1,1))]);
+            figure; subplot(2,1,1); plot(data.trial
             % Baseline correction
             cfg_b    = [];
             cfg_b.demean = 'yes';
-            cfg_b.baselinewindow = cfg_cond.baselinewindow + (-cfg_cond.baselinewindow(1));
+            cfg_b.baselinewindow = cfg_cond.baselinewindow + cfg_cond.baselinewindow(1);
             cfg_b.outputfile   = [cfg_cond.subjectdir cfg_cond.subjectstr '_ICApruned_filtered_' icondition '_' alignment{1} '.mat'];
             data   = ft_preprocessing(cfg_b, data);
-            %subplot(2,1,2); plot(data.trial{1}(1,:));
             
 
 

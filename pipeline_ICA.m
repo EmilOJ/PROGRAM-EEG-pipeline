@@ -1,4 +1,4 @@
-function [] = pipeline_ft(experiment, participant)
+function [] = pipeline_ICA(experiment, participant)
     % 1. read the data
     % 2. hp filter (1 Hz) & maybe lp filter (aprpox. 40 Hz)
     % 3. epoch into dummy consecutive epochs (length approx. 1sec)
@@ -23,6 +23,9 @@ function [] = pipeline_ft(experiment, participant)
     cfg_epoch_1s.hpfreq                  = 1; %Hz
     cfg_epoch_1s.lpfilter                = 'yes';
     cfg_epoch_1s.lpfreq                  = 40; %Hz
+    if (participant == 24)
+        cfg_epoch_1s.hpfilttype              = 'firws';
+    end
 
     % 3. Seperate into 1 second epochs config
     cfg_epoch_1s.trialfun                = 'ft_trialfun_general';
@@ -32,6 +35,7 @@ function [] = pipeline_ft(experiment, participant)
 
     % 4. Remove bad channels
     cfg_epoch_1s.channel                 = get_channellist();
+    %cfg_epoch_1s.trials                  = get_triallist();
 
     % Preprocess (with above configs)
     data_epoch_1s                        = ft_preprocessing(cfg_epoch_1s);
@@ -44,26 +48,38 @@ function [] = pipeline_ft(experiment, participant)
     cfg_epoch_1s.method                  = 'runica';
     try
         % ICA decomposition
-        comp = ft_componentanalysis(cfg_epoch_1s, data_epoch_1s);
+         comp = ft_componentanalysis(cfg_epoch_1s, data_epoch_1s);
     catch
         disp('Could not run ICA');
     end
-    
+
     % Save decomposition
-    save([cfg.ICAcomp_path], 'comp', '-v7.3');
+    save([cfg_epoch_1s.ICAcomp_path], 'comp', '-v7.3');
 
    
 
 %% TODO: Change to use proc_data instead of bad_channels
     %% Helper functions
     function channels = get_channellist()
-        load([cfg_epoch_1s.datadir 'proc_data']);
         channels = 1:128;
-
-        for i = 1:length(bad_channels.(cfg_epoch_1s.subjectstr))
-            channels = channels(channels ~= bad_channels.(cfg_epoch_1s.subjectstr)(i));
+        bad_channels = cfg_epoch_1s.proc_data.(cfg_epoch_1s.subjectstr).bad_channel;
+        
+        for i = 1:length(bad_channels)
+            channels = channels(channels ~= bad_channels(i));
         end
-        disp(['Defining channels to remove:' mat2str(bad_channels.(cfg_epoch_1s.subjectstr))]);
+        disp(['Defining channels to remove:' mat2str(bad_channels)]);
+    end
+    
+    function trials = get_triallist()
+        
+        reject = load([cfg_epoch_1s.datadir 'reject']);
+        reject = reject.reject.(cfg_epoch_1s.subjectstr);
+        trials = 1:size(cfg_epoch_1s.trl, 1);
+        
+        for i = 1:length(reject)
+            trials = trials(trials ~= reject(i));
+        end
+        
     end
 
     clear all;

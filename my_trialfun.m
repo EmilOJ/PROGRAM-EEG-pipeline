@@ -11,7 +11,7 @@ function [trl, event] = my_trialfun(cfg)
     sample  = sample(2:end);
 
     pretrig  = 0; %s
-    posttrig = 1.2; %s
+    posttrig = 1.0; %s
     
     pretrig = round(pretrig * hdr.Fs); %convert to samples
     posttrig = round(posttrig * hdr.Fs); %convert to samples
@@ -26,6 +26,7 @@ function [trl, event] = my_trialfun(cfg)
     triggers = RT_times(:,1) + trigger_cor;
     RT = RT_times(:,2);
     
+    value(1:10) - trigger_cor
     % Check if triggers match
     if sum(~(value == triggers)) == 0
         disp('Triggers match')
@@ -41,7 +42,7 @@ function [trl, event] = my_trialfun(cfg)
     value  = value(trials_to_keep);
     sample = sample(trials_to_keep);
     if (strcmp(cfg.alignment, 'stim'))
-        trl_begin = sample + pretrig;
+        trl_begin = sample + pretrig  + hdr.Fs*cfg.baselinewindow(1);
         trl_end = sample + posttrig;
     elseif (strcmp(cfg.alignment, 'response'))
         RT = RT(trials_to_keep);  
@@ -53,9 +54,9 @@ function [trl, event] = my_trialfun(cfg)
     trl = [trl_begin trl_end offset]; 
     
     %% Remove previously rejected trials
-    load(cfg.proc_data);
     
-    trials_to_reject = proc_data.(cfg.subjectstr).rejecttrial.(cfg.condition);
+    
+    trials_to_reject = cfg.proc_data.(cfg.subjectstr).rejecttrial.(cfg.condition);
     number_of_trials_to_reject = length(trials_to_reject);
     
     if number_of_trials_to_reject > 0
@@ -63,7 +64,4 @@ function [trl, event] = my_trialfun(cfg)
     end
         
     
-    
-    
-   
 end

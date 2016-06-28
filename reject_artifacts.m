@@ -5,7 +5,7 @@ function [] = reject_artifacts(experiment, participant)
     for condition = {'gram', 'lex'}
         icondition = condition{1};
         cfg = initialize_participant_cfg(experiment, participant);
-        cfg.inputfile = [cfg.files.ICA_pruned_filtered_ icondition];
+        cfg.inputfile = [cfg.files.ICA_pruned_filtered_ icondition '_stim'];
 
 
         cfg.method   = 'summary';

@@ -1,4 +1,4 @@
 function [] = add_filedtrip_path()
-     eval('my_config');
+     [my_root, my_fieldtrip_path] = my_config();;
      addpath(my_fieldtrip_path);
 end

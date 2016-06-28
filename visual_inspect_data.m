@@ -1,4 +1,4 @@
-function [] = visual_inspect_data(experiment, participant, file, filter_boolean, continuous)
+function [] = visual_inspect_data(experiment, participant, file, filter_boolean, continuous, channels)
    
     cfg     = initialize_participant_cfg(experiment, participant);
     if strcmp(file, 'raw')
@@ -21,7 +21,7 @@ function [] = visual_inspect_data(experiment, participant, file, filter_boolean,
     end
  
     
-    cfg.channel             = [1:128];
+    cfg.channel             = channels;
     if (continuous)
         cfg.continuous          = 'yes';
         cfg.blocksize           = 20; %seconds

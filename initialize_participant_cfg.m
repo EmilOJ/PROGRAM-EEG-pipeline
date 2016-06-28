@@ -1,5 +1,5 @@
 function [cfg] = initialize_participant_cfg(experiment, participant)
-    eval('my_config')
+    [my_root, my_fieldtrip_path] = my_config();
     cfg                         = [];
     cfg.rootdir                 = [my_root filesep];
     cfg.subjectnr               = num2str(participant);
@@ -7,7 +7,7 @@ function [cfg] = initialize_participant_cfg(experiment, participant)
     cfg.datadir                 = [cfg.rootdir 'EEG-' experiment filesep];
     cfg.subjectdir              = [cfg.datadir cfg.subjectstr filesep];
     cfg.ERPdir                  = [cfg.datadir 'ERP' filesep];
-    cfg.proc_data                = [cfg.datadir 'proc_data.mat'];
+    cfg.proc_data               = read_proc_notes(experiment);
   
     cfg.RTdir                   = [cfg.rootdir 'Behavioural-' experiment filesep 'all' filesep];
     cfg.experiment              = experiment;

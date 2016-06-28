@@ -7,7 +7,7 @@ function [] = GA_inspect(channel, alignment)
    
    
   
-    %% Plotting
+    %% GA butterfly
    figure;
    for j = 1:2
        if j == 1
@@ -30,6 +30,7 @@ function [] = GA_inspect(channel, alignment)
        %ylim([-2 2])
        title(plot_title);
        hold off;
+       set(gca,'Ydir','reverse');
    end
 
    
@@ -40,8 +41,13 @@ function [] = GA_inspect(channel, alignment)
    
    cfg.channel = channel;
    figure; ft_singleplotER(cfg, gram.grandavg, lex.grandavg);
+   set(gca,'Ydir','reverse');
    
+   clear gram;
+   clear lex;
    
+ 
+    
    
    
 end
