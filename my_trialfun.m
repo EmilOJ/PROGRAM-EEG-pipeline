@@ -11,7 +11,7 @@ function [trl, event] = my_trialfun(cfg)
     sample  = sample(2:end);
 
     pretrig  = 0; %s
-    posttrig = 0.8; %s
+    posttrig = 1.2; %s
     
     pretrig = round(pretrig * 256); %convert to samples
     posttrig = round(posttrig * 256); %convert to samples

@@ -60,16 +60,18 @@ end
 
 %% 8. Grand average
 % subjects = [2,5,7:23,25];
-% subjects = [2]
-grand_average(experiment, subjects, 'response');
+% subjects = [14,13,5,16,15,17,21,12,8,25]% slowest
+% subjects = [23,25]
+
+% grand_average(experiment, subjects, 'response');
 % grand_average(experiment, subjects, 'stim');
 
-GA_inspect(experiment, {'C21', 'A1', 'A23', 'D31'}, 'response');
+GA_inspect(experiment, {'C21', 'A1', 'A23', 'D31'}, 'stim');
 % GA_inspect(experiment, {'C21', 'A1', 'A23', 'D31'}, 'stim');
 
 %% 9. Statistics
-% statistics_ERP(experiment, subjects, 'stim', 'new', 0.05);
-statistics_ERP(experiment, subjects, 'response', 'new', 0.01);
+statistics_ERP(experiment, subjects, 'stim', 'new', 0.05);
+statistics_ERP(experiment, subjects, 'response', 'new', 0.05);
 
 
 %% Misc.

@@ -11,7 +11,7 @@ function [] = repair_bad_channels(experiment, participant)
     load([cfg.files.ICA_pruned_filtered]);
     neighbours = ft_prepare_neighbours(cfg, data);
     
-    for alignment = {'response'}
+    for alignment = {'stim','response'}
         ialignment = alignment{1};
         for condition = {'gram', 'lex'}
             icondition = condition{1};

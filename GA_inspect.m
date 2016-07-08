@@ -37,14 +37,10 @@ function [] = GA_inspect(experiment, channels, alignment)
    end
 
    
-   
+%    
    cfg.showlabels  = 'yes';
    cfg.layout      = 'biosemi128.lay';
-   %Baseline correction
-%    if strcmp(alignment, 'stim')
-%     cfg.xlim        = [2 3];
-%    end
-   figure; ft_multiplotER(cfg, gram.grandavg, lex.grandavg);
+   
    legend('gram','lex');
    cfg.showlabels  = 'yes';
    cfg.layout      = 'biosemi128.lay';

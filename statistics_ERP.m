@@ -65,9 +65,10 @@ function [] = statistics_ERP(experiment, subjects, alignment, method, alpha)
 %     cfg.zlim = [-5 5];
 %     figure; ft_clusterplot(cfg, stat);
    
-   
+    x = linspace(0,1200,size(stat.prob,1));
+    y = 1:128;
     figure;
-    imagesc(stat.prob>alpha);
+    imagesc(x,y,stat.prob>alpha);
     colormap('hot');
     caxis([0 1]);
     xlabel('Time [ms]');
