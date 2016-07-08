@@ -3,7 +3,7 @@ function [] = epoch_data(experiment, participant, alignment)
     cfg_data = cfg;
     cfg_data.inputfile = cfg.files.ICA_pruned;
     data_org = ft_preprocessing(cfg_data);
-    for alignment = {'stim', 'response'}
+    for alignment = {'response'}
         for condition = {'gram', 'lex'}
 
 

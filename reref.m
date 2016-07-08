@@ -1,7 +1,7 @@
 function [] = reref(experiment, participant)
     for condition = {'gram', 'lex'}
         icondition = condition{1};
-        for alignment = {'stim'}
+        for alignment = {'response'}
             ialignment = alignment{1};
             
             cfg = [];

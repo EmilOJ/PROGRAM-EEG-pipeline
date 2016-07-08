@@ -56,7 +56,7 @@ function [trl, event] = my_trialfun(cfg)
     elseif (strcmp(cfg.alignment, 'response'))
         RT = RT(trials_to_keep);  
         trl_end = round(sample + RT*10^(-3)*256 - 0.1*256);
-        trl_begin = trl_end - 0.8*256;
+        trl_begin = round(trl_end - 0.8*256);
     end
     
     offset = repmat(pretrig, length(value),1);

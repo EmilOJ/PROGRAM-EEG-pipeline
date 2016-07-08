@@ -11,7 +11,7 @@ function [] = repair_bad_channels(experiment, participant)
     load([cfg.files.ICA_pruned_filtered]);
     neighbours = ft_prepare_neighbours(cfg, data);
     
-    for alignment = {'stim', 'response'}
+    for alignment = {'response'}
         ialignment = alignment{1};
         for condition = {'gram', 'lex'}
             icondition = condition{1};
@@ -28,8 +28,9 @@ function [] = repair_bad_channels(experiment, participant)
             load([cfg.rootdir 'elecpos.mat']);
             cfg.elec = elec;
 
+            load([cfg.files.ICA_pruned_filtered_ icondition '_' ialignment]);
             cfg.badchannel = cfg.proc_data.(cfg.subjectstr).missingchan.(icondition);
-            if length(cfg.badchannel) ~= length(ft_channelselection(cfg.badchannel,data.label)
+            if length(cfg.badchannel) ~= length(ft_channelselection(cfg.badchannel,data.label))
                 error('Could not verify bad channels loaded from excel sheet');
             end
             interp = ft_channelrepair(cfg);
