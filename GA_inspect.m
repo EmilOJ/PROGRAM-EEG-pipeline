@@ -1,6 +1,6 @@
-function [] = GA_inspect(channel, alignment)
+function [] = GA_inspect(experiment, channels, alignment)
    add_filedtrip_path();
-   cfg = initialize_participant_cfg('det', 2);
+   cfg = initialize_participant_cfg(experiment, 2);
    
    gram = load([cfg.ERPdir 'gram_GA_' alignment '.mat']);
    lex = load([cfg.ERPdir 'lex_GA_' alignment '.mat']);
@@ -26,8 +26,11 @@ function [] = GA_inspect(channel, alignment)
            hold on;
        end
        axis tight;
-       %xlim([0 .3])
-       %ylim([-2 2])
+       %Baseline correction
+%        if strcmp(alignment, 'stim')
+%            xlim([2 3]);
+%        end
+%        ylim([-2 2])
        title(plot_title);
        hold off;
        set(gca,'Ydir','reverse');
@@ -37,11 +40,30 @@ function [] = GA_inspect(channel, alignment)
    
    cfg.showlabels  = 'yes';
    cfg.layout      = 'biosemi128.lay';
+   %Baseline correction
+%    if strcmp(alignment, 'stim')
+%     cfg.xlim        = [2 3];
+%    end
    figure; ft_multiplotER(cfg, gram.grandavg, lex.grandavg);
+   legend('gram','lex');
+   cfg.showlabels  = 'yes';
+   cfg.layout      = 'biosemi128.lay';
+   %Baseline correction
+%    if strcmp(alignment, 'stim')
+%     cfg.xlim        = [2 3];
+%    end
+   figure; ft_multiplotER(cfg, gram.grandavg, lex.grandavg);
+   legend('gram','lex');
    
-   cfg.channel = channel;
-   figure; ft_singleplotER(cfg, gram.grandavg, lex.grandavg);
-   set(gca,'Ydir','reverse');
+   figure; counter = 1;
+   for chan = channels
+       subplot(length(channels),1,counter);
+       cfg.channel = chan;
+       ft_singleplotER(cfg, gram.grandavg, lex.grandavg);
+       set(gca,'Ydir','reverse');
+       legend('gram','lex');
+       counter = counter + 1;
+   end
    
    clear gram;
    clear lex;

@@ -11,10 +11,10 @@ function [trl, event] = my_trialfun(cfg)
     sample  = sample(2:end);
 
     pretrig  = 0; %s
-    posttrig = 1.0; %s
+    posttrig = 0.8; %s
     
-    pretrig = round(pretrig * hdr.Fs); %convert to samples
-    posttrig = round(posttrig * hdr.Fs); %convert to samples
+    pretrig = round(pretrig * 256); %convert to samples
+    posttrig = round(posttrig * 256); %convert to samples
 
     trl = [];
     
@@ -28,10 +28,15 @@ function [trl, event] = my_trialfun(cfg)
     
     value(1:10) - trigger_cor
     % Check if triggers match
-    if sum(~(value == triggers)) == 0
-        disp('Triggers match')
-    else
-        error('Triggers do not match');
+    try
+        if sum(~(value == triggers)) == 0
+            disp('Triggers match')
+        else
+            error('Triggers do not match');
+        end
+    catch
+        test = value - trigger_cor;
+        disp('Could not compare triggers');
     end
     
     correct_triggers = cfg.trialdef.eventvalue;
@@ -41,13 +46,17 @@ function [trl, event] = my_trialfun(cfg)
     
     value  = value(trials_to_keep);
     sample = sample(trials_to_keep);
+    for i = 1:length(sample)
+        [val indx] = min(abs(sample(i) - cfg.original_samples));
+        sample(i) = indx;
+    end
     if (strcmp(cfg.alignment, 'stim'))
-        trl_begin = sample + pretrig  + hdr.Fs*cfg.baselinewindow(1);
+        trl_begin = sample + pretrig; % + hdr.Fs*cfg.baselinewindow(1); %Baseline correction
         trl_end = sample + posttrig;
     elseif (strcmp(cfg.alignment, 'response'))
         RT = RT(trials_to_keep);  
-        trl_end = sample + RT;
-        trl_begin = trl_end - 450;
+        trl_end = round(sample + RT*10^(-3)*256 - 0.1*256);
+        trl_begin = trl_end - 0.8*256;
     end
     
     offset = repmat(pretrig, length(value),1);

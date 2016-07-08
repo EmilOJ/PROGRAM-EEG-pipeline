@@ -1,5 +1,5 @@
-function [] = statistics_ERP(subjects, alignment, method, alpha)
-    experiment = 'det';
+function [] = statistics_ERP(experiment, subjects, alignment, method, alpha)
+   
     cfg = initialize_participant_cfg(experiment, 2);
     
     if (strcmp(method, 'new'))
@@ -21,7 +21,13 @@ function [] = statistics_ERP(subjects, alignment, method, alpha)
         cfg = [];
         cfg.channel     = 'all';
         cfg.neighbours  = neighbours; % defined as above
-        cfg.latency     = [0 1];
+% %         %Baseline correction
+%         if strcmp(alignment, 'stim')
+%             cfg.latency     = [2 3]
+%         else
+%             cfg.latency     = 'all';
+%         end
+%         
         cfg.avgovertime = 'no';
         cfg.parameter   = 'avg';
         cfg.method      = 'montecarlo';
@@ -30,7 +36,7 @@ function [] = statistics_ERP(subjects, alignment, method, alpha)
         cfg.correctm    = 'cluster';
         cfg.correcttail = 'prob';
         cfg.numrandomization = 1000;
-        cfg.minnbchan   = 5;
+        cfg.minnbchan   = 2;
 
         Nsub = length(subjects);
         cfg.design(1,1:2*Nsub)  = [ones(1,Nsub) 2*ones(1,Nsub)];
