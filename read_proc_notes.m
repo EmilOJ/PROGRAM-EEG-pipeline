@@ -1,10 +1,14 @@
-function proc_data = read_proc_notes(experiment)
+function proc_data = read_proc_notes(experiment, ICA)
     [my_root, my_fieldtrip_path] = my_config();
     cfg                         = [];
     cfg.rootdir                 = [my_root filesep];
     cfg.datadir                 = [cfg.rootdir 'EEG-' experiment filesep];
     
-    [num, txt, raw] = xlsread([cfg.datadir 'proc_notes_article.xlsx']);
+    if ICA
+        [num, txt, raw] = xlsread([cfg.datadir 'proc_notes_article.xlsx']);
+    else
+        [num, txt, raw] = xlsread([cfg.datadir 'proc_notes_article2.xlsx']);
+    end
     
     for i = 2:31
         subjstr = raw{i,1};

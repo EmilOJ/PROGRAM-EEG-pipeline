@@ -1,5 +1,5 @@
-function [] = epoch_data(experiment, participant, alignment)
-    cfg = initialize_participant_cfg(experiment, participant);
+function [] = epoch_data(experiment, participant, ICA)
+    cfg = initialize_participant_cfg(experiment, participant, ICA);
     cfg_data = cfg;
     cfg_data.inputfile = cfg.files.ICA_pruned;
     data_org = ft_preprocessing(cfg_data);
@@ -54,8 +54,16 @@ function [] = epoch_data(experiment, participant, alignment)
 %             
 %             
 %             cfg_cond.trl = cfg_art.trl;
-            cfg_cond.inputfile = cfg.files.ICA_pruned_filtered;
-            cfg_cond.outputfile   = [cfg_cond.subjectdir cfg_cond.subjectstr '_ICApruned_filtered_' icondition '_' alignment{1} '.mat'];
+            
+            
+            if ICA
+                cfg_cond.inputfile = cfg.files.ICA_pruned_filtered;
+                cfg_cond.outputfile   = [cfg_cond.subjectdir cfg_cond.subjectstr '_ICApruned_filtered_' icondition '_' alignment{1} '.mat'];
+            else
+                cfg_cond.inputfile = cfg.files.raw_filtered;
+                cfg_cond.outputfile   = [cfg.files.raw_filtered_ icondition '_' alignment{1} '.mat'];
+            end
+                
             ft_redefinetrial(cfg_cond);
 
             % Baseline correction

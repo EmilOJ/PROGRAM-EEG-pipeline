@@ -1,7 +1,8 @@
 clc; close all; clear all;
 experiment = 'verber';
-for ii = [2,5,7:23,25]
-% for ii = 2
+ICA = 0;
+% for ii = [8,13,16,9,25,24]
+for ii = 8
 %     try
 %% 1. ICA
 % pipeline_ICA(experiment, 4);
@@ -25,7 +26,7 @@ for ii = [2,5,7:23,25]
 % failed_4 = [];
 % % for ii = [2:30]
 %     try
-%         my_filter(experiment, ii);
+%         my_filter(experiment, ii, ICA);
 %         disp(['***!!!*** Part number:' num2str(ii)]);
 %     catch
 %         failed_4 = [failed_4 ii];
@@ -39,8 +40,8 @@ for ii = [2,5,7:23,25]
 % % for ii = [25]
 %     
 % %     try
-        epoch_data(experiment, ii);
-%         disp(['***!!!*** Part number:' num2str(ii)]);
+%         epoch_data(experiment, ii, ICA);
+% %         disp(['***!!!*** Part number:' num2str(ii)]);
 % 
 % %     catch
 % %         disp(['something went wrong at part' num2str(ii)]);
@@ -50,28 +51,29 @@ for ii = [2,5,7:23,25]
 
 % end
 %% 6. Reject artifacts / Interpolate
-repair_bad_channels(experiment,ii);
+reject_artifacts_manual(experiment, ii, ICA);
+% repair_bad_channels(experiment,ii);
 % 
 
 %% 7. Re-reference
-reref(experiment, ii);
+% reref(experiment, ii);
 
 end
 
 %% 8. Grand average
-% subjects = [2,5,7:23,25];
+% subjects = [2,5,7:15];
 % subjects = [14,13,5,16,15,17,21,12,8,25]% slowest
 % subjects = [23,25]
 
 % grand_average(experiment, subjects, 'response');
 % grand_average(experiment, subjects, 'stim');
 
-GA_inspect(experiment, {'C21', 'A1', 'A23', 'D31'}, 'stim');
+% GA_inspect(experiment, {'C21', 'A1', 'A23', 'D31'}, 'stim');
 % GA_inspect(experiment, {'C21', 'A1', 'A23', 'D31'}, 'stim');
 
 %% 9. Statistics
-statistics_ERP(experiment, subjects, 'stim', 'new', 0.05);
-statistics_ERP(experiment, subjects, 'response', 'new', 0.05);
+% statistics_ERP(experiment, subjects, 'stim', 'new', 0.05);
+% statistics_ERP(experiment, subjects, 'response', 'new', 0.05);
 
 
 %% Misc.
